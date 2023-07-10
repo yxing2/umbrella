@@ -21,15 +21,16 @@ first_result = results.at(0)
 #pp first_result
 geo = first_result.fetch("geometry")
 loc = geo.fetch("location")
-pp latitude = loc.fetch("lat")
-pp longitude = loc.fetch("lng")
+latitude = loc.fetch("lat")
+longitude = loc.fetch("lng")
 
 #Get the weather at the user’s coordinates from the Pirate Weather API.
 weather_url = "https://api.pirateweather.net/forecast/" + ENV.fetch("PIRATE_WEATHER_KEY") + "/" + latitude.to_s + "," + longitude.to_s 
 #pp weather_url
 raw_weather = HTTP.get(weather_url).to_s
+parsed_response = JSON.parse(raw_weather)
 
 #Display the current temperature and summary of the weather for the next hour.
-currently_hash = raw_weather.fetch("currently")
+currently_hash = parsed_response.fetch("currently")
 current_temp = currently_hash.fetch("temperature")
 puts "The current temperature is " + current_temp.to_s + "."
